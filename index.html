@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBORG // Next-Gen Human Augmentation</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <style>
+    /* CSS RESET & VARIABLES */
+    :root {
+      --bg-dark: #050811;
+      --card-bg: rgba(13, 22, 40, 0.7);
+      --cyan-neon: #00f3ff;
+      --magenta-neon: #ff0055;
+      --text-main: #e2f1f8;
+      --text-muted: #8499b1;
+      --border-glow: rgba(0, 243, 255, 0.3);
+      --font-heading: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: none; /* Hide default cursor to use custom animation */
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* CUSTOM CYBER CURSOR ANIMATION */
+    .cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background-color: var(--cyan-neon);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px var(--cyan-neon);
+    }
+
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border: 2px dashed var(--cyan-neon);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s, transform 0.08s ease-out;
+      animation: rotateCursor 6s linear infinite;
+    }
+
+    /* Active state when hovering links or buttons */
+    .cursor-ring.hovered {
+      width: 50px;
+      height: 50px;
+      border-color: var(--magenta-neon);
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+    }
+
+    @keyframes rotateCursor {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* CYBERPUNK GRID BACKGROUND OVERLAY */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: 
+        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER / NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(5, 8, 17, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-glow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      color: var(--cyan-neon);
+      text-shadow: 0 0 10px var(--cyan-neon);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--cyan-neon);
+      text-shadow: 0 0 8px var(--cyan-neon);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8rem 5% 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .hero-tag {
+      font-family: var(--font-heading);
+      color: var(--magenta-neon);
+      letter-spacing: 3px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 5px var(--magenta-neon);
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .hero-title span {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--cyan-neon);
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* CYBER BUTTON */
+    .btn-cyber {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #000;
+      background: var(--cyan-neon);
+      border: none;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-cyber:hover {
+      background: var(--magenta-neon);
+      box-shadow: 0 0 25px rgba(255, 0, 85, 0.6);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* HERO GRAPHIC HUD */
+    .hero-hud {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hud-circle {
+      position: absolute;
+      border: 2px dashed var(--cyan-neon);
+      border-radius: 50%;
+      animation: rotateHUD 20s linear infinite;
+    }
+
+    .hud-circle.outer {
+      width: 380px;
+      height: 380px;
+      border-color: rgba(0, 243, 255, 0.2);
+    }
+
+    .hud-circle.inner {
+      width: 280px;
+      height: 280px;
+      border-color: var(--magenta-neon);
+      animation-direction: reverse;
+      animation-duration: 12s;
+    }
+
+    .hud-core {
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--cyan-neon) 0%, transparent 70%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #fff;
+      filter: drop-shadow(0 0 15px var(--cyan-neon));
+    }
+
+    @keyframes rotateHUD {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* FEATURES SECTION */
+    .features {
+      padding: 5rem 5%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 3rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      color: var(--cyan-neon);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .cyber-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-glow);
+      padding: 2.5rem 1.8rem;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      transition: all 0.3s ease;
+    }
+
+    .cyber-card:hover {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+      transform: translateY(-5px);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      color: var(--cyan-neon);
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-glow);
+      padding: 2rem 5%;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 900px) {
+      * {
+        cursor: auto; /* Fallback to default cursor on mobile/touch screens */
+      }
+      .cursor-dot, .cursor-ring {
+        display: none;
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 7rem;
+      }
+      .hero-content {
+        margin-bottom: 3rem;
+      }
+      .hero-title {
+        font-size: 2.6rem;
+      }
+      .hero-hud {
+        width: 300px;
+        height: 300px;
+      }
+      .hud-circle.outer { width: 280px; height: 280px; }
+      .hud-circle.inner { width: 200px; height: 200px; }
+      .hud-core { width: 120px; height: 120px; font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cyber Cursor Elements -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Cyber Background Pattern -->
+  <div class="bg-grid"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="logo">CYBORG<span>.OS</span></div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#features">Augmentations</a></li>
+        <li><a href="#tech">Specs</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">// INITIALIZE AUGMENTATION V4.8</div>
+      <h1 class="hero-title">Evolve Beyond <span>Human Limits</span></h1>
+      <p class="hero-desc">
+        Seamlessly integrate next-generation cybernetic interfaces, neural links, and synthetic enhancements designed for peak human performance.
+      </p>
+      <a href="#features" class="btn-cyber">Upgrade System</a>
+    </div>
+
+    <!-- Interactive Glowing HUD -->
+    <div class="hero-hud">
+      <div class="hud-circle outer"></div>
+      <div class="hud-circle inner"></div>
+      <div class="hud-core">
+        <i class="fa-solid fa-microchip"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features / Augmentations Section -->
+  <section class="features" id="features">
+    <h2 class="section-title">Core <span>Augmentations</span></h2>
+    <div class="grid-3">
+      
+      <div class="cyber-card">
+        <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+        <h3 class="card-title">Neural Mesh Link</h3>
+        <p class="card-desc">Direct high-bandwidth brain-computer interface allowing ultra-fast cloud computing and thought synchronization.</p>
+      </div>
+
+      <div class="cyber-card">
+        <div class="card-icon"><i class="fa-solid fa-eye"></i></div>
+        <h3 class="card-title">Ocular HUD Optics</h3>
+        <p class="card-desc">Advanced optical implants featuring real-time thermal vision, augmented HUD overlays, and zoom capabilities.</p>
+      </div>
+
+      <div class="cyber-card">
+        <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="card-title">Subdermal Armor</h3>
+        <p class="card-desc">Flexible carbon-nanotube weave layered under skin for maximum impact protection and thermal regulation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 CYBORG SYSTEMS INC. ALL RIGHTS RESERVED.</p>
+  </footer>
+
+  <!-- JavaScript for Custom Cursor Tracking -->
+  <script>
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+
+    window.addEventListener('mousemove', (e) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+
+      // Instant movement for the center dot
+      cursorDot.style.left = `${posX}px`;
+      cursorDot.style.top = `${posY}px`;
+
+      // Smooth delayed target movement for the outer reticle ring
+      cursorRing.animate({
+        left: `${posX}px`,
+        top: `${posY}px`
+      }, { duration: 250, fill: "forwards" });
+    });
+
+    // Expand & turn magenta when hovering over clickable elements
+    const hoverables = document.querySelectorAll('a, .cyber-card, .logo');
+    hoverables.forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovered'));
+    });
+  </script>
+
+</body>
+</html>
